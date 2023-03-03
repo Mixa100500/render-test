@@ -1,6 +1,9 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const cors = require('cors')
+
+const Note = require('./modules/note')
 
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
@@ -43,7 +46,9 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/notes', (req, res) => {
-  res.json(notes)
+  Note.find({}).then(notes => {
+    res.json(notes)
+  })
 })
 
 const generateId = () => {
