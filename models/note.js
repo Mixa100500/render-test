@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 mongoose.set('strictQuery', false)
 
 const url = process.env.MONGODB_URL
+
 console.log('connecting to', url)
 
 mongoose.connect(url)
@@ -14,11 +15,15 @@ mongoose.connect(url)
   })
 
 const noteSchame = new mongoose.Schema({
-  content: String,
+  content: {
+    type: String,
+    minLength: 5,
+    required: true
+  },
   important: Boolean,
 })
 
-noteSchame.set('toJson', {
+noteSchame.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id
